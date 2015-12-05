@@ -19,39 +19,39 @@ object QuickOptions extends Enumeration {
 object GCli {
   import sys.process._
 
-  def main(args: Array[String]) {
-
-    /**
-      * Will return the year of the last century if the two digits given are greater than the current year, i.e.
-      * for an input of 71 it will return 1971. 1-digit integers are treated as 0-padded (3 -> 03 -> 2003).
-      *
-      * @param year the year to be padded
-      * @return returns a 2-digit value as a 4-digit integer
-      */
-    // TODO needs tests
-    def paddedYear(year: Int): Int = {
-      f"$year%02d".length match {
-        case 2 =>
-          val prefix = if (year > Year.now().getValue.toString.takeRight(2).toInt) {
-            Year.now().getValue.toString.take(2).toInt - 1
-          } else {
-            Year.now().getValue.toString.take(2).toInt
-          }
-          f"$prefix$year%02d".toInt
-        case _ => year
-      }
+  /**
+    * Will return the year of the last century if the two digits given are greater than the current year, i.e.
+    * for an input of 71 it will return 1971. 1-digit integers are treated as 0-padded (3 -> 03 -> 2003).
+    *
+    * @param year the year to be padded
+    * @return returns a 2-digit value as a 4-digit integer
+    */
+  // TODO needs tests
+  def paddedYear(year: Int): Int = {
+    f"$year%02d".length match {
+      case 2 =>
+        val prefix = if (year > Year.now().getValue.toString.takeRight(2).toInt) {
+          Year.now().getValue.toString.take(2).toInt - 1
+        } else {
+          Year.now().getValue.toString.take(2).toInt
+        }
+        f"$prefix$year%02d".toInt
+      case _ => year
     }
+  }
+
+  /**
+    * If an integer less than 10 is given, it will be 0-padded, i.e. an input of 6 is interpreted as 06 and
+    * passes validation.
+    *
+    * @param year the year to be validated
+    * @return true if the integer passed has either 2 or 4 digits.
+    */
+  // TODO needs tests
+  def validateYearInput(year: Int): Boolean = f"$year%02d".length == 2 || year.toString.length == 4
 
 
-    /**
-      * If an integer less than 10 is given, it will be 0-padded, i.e. an input of 6 is interpreted as 06 and
-      * passes validation.
-      *
-      * @param year the year to be validated
-      * @return true if the integer passed has either 2 or 4 digits.
-      */
-    // TODO needs tests
-    def validateYearInput(year: Int): Boolean = f"$year%02d".length == 2 || year.toString.length == 4
+  def main(args: Array[String]) {
 
     implicit val quickOptionsRead: scopt.Read[QuickOptions.Value] =
       scopt.Read.reads(QuickOptions withName)
@@ -118,7 +118,7 @@ object GCli {
           val yt = if (config.yearTo == -1) "" else config.yearTo.toString
           s"&tbs=cdr:1,cd_min:$yf,cd_max:$yt"
         } else ""
-        
+
         // Assemble final time-filter-query
         // ---
         val timeFilter = if (qdr.length > 0 && tbs.length > 0) {

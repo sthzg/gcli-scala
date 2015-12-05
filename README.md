@@ -64,7 +64,6 @@ or a shell script. An alias in a dot-file like `.bashrc` might look like.
 –––
 
 - [ ] Make open command customizable
-- [ ] Provide tests
 - [ ] Make Google's TLD customizable 
 - [ ] Provide option to limit searches to domain (e.g. stackoverflow)
 - [ ] Provide feature to save search presets (i.e. `--preset:foo`)

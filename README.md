@@ -1,6 +1,8 @@
 # gcli-scala
 Command Line Search Client for Google
 
+[![Build Status](https://travis-ci.org/sthzg/gcli-scala.svg?branch=master)](https://travis-ci.org/sthzg/gcli-scala)
+
 
 **What**  
 –––

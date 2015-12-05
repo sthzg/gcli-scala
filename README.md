@@ -30,26 +30,50 @@ interested in finding current content. Google provides the time-based search fil
 
 **From within SBT**: (`--noop` prevents actually opening the browser)
 
-    > run I really need to find this -q y
+    > run -q:y I really need to find this                            # last year
     Searching for: I really need to find this
     noop: would run open https://www.google.com/?#q=I+really+need+to+find+this&tbs=qdr:y
 
-    > run I really need to find this -q m
+    > run I really need to find this -q m                            # last month
     Searching for: I really need to find this
     noop: would run open https://www.google.com/?#q=I+really+need+to+find+this&tbs=qdr:m
 
-    > run and now for something different --yfrom:2013
+    > run and now for something different --yfrom:2013               # later than 2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:2013,cd_max:
     
-    > run and now for something different --yto:2013
+    > run and now for something different --yto:2013                 # older than 2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:,cd_max:2013
     
-    > run and now for something different --yfrom:2010 --yto:2013
+    > run and now for something different --yfrom:2010 --yto:2013    # between 2010 and 2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:2010,cd_max:2013
     
+    
+**Configuration**  
+–––
+
+`WIP` When you run the command, you will be prompted for approval to create a `.gcli` directory 
+at your home dir. If you approve a `config.json` will be saved in that directory. There is currently no nice api 
+to write the config file, but you could open it up in your editor and modify these settings:
+
+    # vi ~/.gcli/config.json
+    startCommand ... the command that will be invoked in your shell to open the browser (default: open)
+    tld ............ the Google top-level domain to use for your search (default: com)
+    
+`open` works on Mac OS X, but you could change it for example to invoke `open -a firefox` or something similar. On 
+other platforms another command might be needed, e.g. `xdg-open` on Linux.
+
+The reason for making `.gcli` a directory rather than a dot-file is that this directory will also be the storage 
+location for search profiles and other user settings in the future.
+
+In a future version the path itself will become configurable, so that it gets possible to store these files in 
+Dropbox, Livedrive, etc.
+
+**Caution** the `startCommand` is currently executed as is, so if someone tries to do some `sudo rm -Rfv / && open` 
+ in that setting that might become a sad moment.
+
     
 **Running from CLI**  
 –––

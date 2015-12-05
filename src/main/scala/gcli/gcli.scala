@@ -26,7 +26,6 @@ object GCli {
     * @param year the year to be padded
     * @return returns a 2-digit value as a 4-digit integer
     */
-  // TODO needs tests
   def paddedYear(year: Int): Int = {
     f"$year%02d".length match {
       case 2 =>
@@ -47,7 +46,6 @@ object GCli {
     * @param year the year to be validated
     * @return true if the integer passed has either 2 or 4 digits.
     */
-  // TODO needs tests
   def validateYearInput(year: Int): Boolean = f"$year%02d".length == 2 || year.toString.length == 4
 
 
@@ -101,6 +99,9 @@ object GCli {
 
     parser.parse(args, Config()) match {
       case Some(config) =>
+
+        val cfg = gcli.Config.load()
+
         def getQuery = config.query.mkString(" ")
         println(s"\nSearching for: $getQuery")
 
@@ -131,7 +132,7 @@ object GCli {
         // Build query string and final command
         // –––
         val q: String = URLEncoder encode(getQuery, "utf-8")
-        val cmd: String = s"open https://www.google.com/?#q=$q$timeFilter"
+        val cmd: String = s"${cfg.startCommand} https://www.google.${cfg.tld}/?#q=$q$timeFilter"
 
         if (!config.noop) cmd ! else println(s"NOOP: would run $cmd")
 

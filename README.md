@@ -49,6 +49,15 @@ interested in finding current content. Google provides the time-based search fil
     > run and now for something different --yfrom:2010 --yto:2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:2010,cd_max:2013
+    
+    
+**Running from CLI**  
+–––
+
+Executing by typing `$ java -jar ...` is cumbersome. On Unix/Linux it is easy to get around with either an alias 
+or a shell script. An alias in a dot-file like `.bashrc` might look like.
+
+    alias gcli='java -jar /path/to/gcli-scala.jar'
 
 
 **More interesting stuff** (*that might be added*)  
@@ -57,7 +66,6 @@ interested in finding current content. Google provides the time-based search fil
 - [ ] Make open command customizable
 - [ ] Provide tests
 - [ ] Make Google's TLD customizable 
-- [ ] Explore ways to provide nicer executables (not much fun with `java -jar ./gcli`) 
 - [ ] Provide option to limit searches to domain (e.g. stackoverflow)
 - [ ] Provide feature to save search presets (i.e. `--preset:foo`)
 - [ ] Make default search settings customizable (behavior /wo any options)

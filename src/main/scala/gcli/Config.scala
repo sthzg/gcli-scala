@@ -80,6 +80,10 @@ object Config{
     Config.readConfig(Json.parse(configJson))
   }
 
+  def parseGcliEnvVars() = {
+    val gcliEnvVars = sys.env.filter(_._1.toLowerCase startsWith "gcli")
+  }
+
   /**
     * Displays a yesno question on stdin. Any input except y or Y returns false.
     *

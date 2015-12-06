@@ -56,7 +56,7 @@ object GCli {
 
     // Config object for arg/option parser
     // –––
-    case class Config(query: Seq[File] = Seq(),
+    case class Config(query: Seq[String] = Seq(),
                       quick: QuickOptions = QuickOptions.n,
                       yearFrom: Int = -1,
                       yearTo: Int = -1,
@@ -72,7 +72,7 @@ object GCli {
       help("help") text "prints this usage text"
 
       // the query terms for our search
-      arg[File]("<query terms>...") unbounded() required() action { (x, c) =>
+      arg[String]("<query terms>...") unbounded() required() action { (x, c) =>
         c.copy(query = c.query :+ x)
       } text "search query"
 

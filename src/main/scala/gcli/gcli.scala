@@ -56,14 +56,19 @@ object GCli {
 
     // Config object for arg/option parser
     // –––
-    case class Config(query: Seq[File] = Seq(), quick: QuickOptions = QuickOptions.n, noop: Boolean = false,
-                      yearFrom: Int = -1, yearTo: Int = -1)
+    case class Config(query: Seq[File] = Seq(),
+                      quick: QuickOptions = QuickOptions.n,
+                      yearFrom: Int = -1,
+                      yearTo: Int = -1,
+                      site: String = "",
+                      limitToStackoverflow: Boolean = false,
+                      noop: Boolean = false)
 
 
     // Define the CL interface
     // –––
     val parser = new scopt.OptionParser[Config]("gcli") {
-      head("gcli", "0.1")
+      head("gcli", "0.0.1")
       help("help") text "prints this usage text"
 
       // the query terms for our search
@@ -90,6 +95,14 @@ object GCli {
         year => if (validateYearInput(year)) success else failure("yto is not a valid year")
       } text "search for content older --yto (accepts 2-digit and 4-digit numbers)"
 
+      opt[String]("site") action { (x, c) =>
+        c.copy(site = x)
+      } text "specify a domain that this search should be limited to, e.g. docs.djangoproject.com"
+
+      opt[Unit]("so") action { (_, c) =>
+        c.copy(limitToStackoverflow = true)
+      } text "limit search results to stackoverflow.com"
+
       // noop param for debugging
       opt[Unit]("noop") action { (_, c) =>
         c.copy(noop = true)
@@ -113,7 +126,7 @@ object GCli {
         }
 
         // Process yearFrom and/or yearTo
-        // ---
+        // –––
         val tbs = if (config.yearFrom > -1 || config.yearTo > -1) {
           val yf = if (config.yearFrom == -1) "" else config.yearFrom.toString
           val yt = if (config.yearTo == -1) "" else config.yearTo.toString
@@ -121,7 +134,7 @@ object GCli {
         } else ""
 
         // Assemble final time-filter-query
-        // ---
+        // –––
         val timeFilter = if (qdr.length > 0 && tbs.length > 0) {
           println("Ambiguous params for --quick and --yearFrom/--yearTo. Filter for --quick will be ignored.")
           tbs
@@ -129,10 +142,21 @@ object GCli {
         else if (qdr.length > 0) { qdr }
         else                     { tbs }
 
+        // Limit search results to one domain using Google's site:xyz.com option
+        // –––
+        def limitToSite(): String = {
+          if (!config.site.isEmpty && config.limitToStackoverflow)
+            println("Ambiguous params for --site and --so. --so flag will be ignored.")
+
+          if (!config.site.isEmpty) return s"site:${URLEncoder.encode(config.site, "utf-8")}+"
+          if (config.limitToStackoverflow) return "site:stackoverflow.com+"
+          ""
+        }
+
         // Build query string and final command
         // –––
         val q: String = URLEncoder encode(getQuery, "utf-8")
-        val cmd: String = s"${cfg.startCommand} https://www.google.${cfg.tld}/?#q=$q$timeFilter"
+        val cmd: String = s"${cfg.startCommand} https://www.google.${cfg.tld}/?#q=${limitToSite()}$q$timeFilter"
 
         if (!config.noop) cmd ! else println(s"NOOP: would run $cmd")
 

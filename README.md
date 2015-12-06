@@ -12,8 +12,8 @@ interested in finding current content. Google provides the time-based search fil
 
 **Current state of affairs:**
 
-    ▶ java -jar ./gcli-scala-assembly-0.1.jar --help
-    gcli 0.1
+    ▶ gcli --help
+    gcli 0.0.1
     Usage: gcli [options] <query terms>...
     
       --help
@@ -26,8 +26,14 @@ interested in finding current content. Google provides the time-based search fil
             search for content more recent than --yfrom (accepts 2-digit and 4-digit numbers)
       --yto <value>
             search for content older --yto (accepts 2-digit and 4-digit numbers)
+      --site <value>
+            specify a domain that this search should be limited to, e.g. docs.djangoproject.com
+      --so
+            limit search results to stackoverflow.com
       --noop
             run program but don't open the browser
+    
+
 
 
 **From within SBT**: (`--noop` prevents actually opening the browser)
@@ -36,21 +42,29 @@ interested in finding current content. Google provides the time-based search fil
     Searching for: I really need to find this
     noop: would run open https://www.google.com/?#q=I+really+need+to+find+this&tbs=qdr:y
 
-    > run I really need to find this -q m                            # last month
+    > run -q:m I really need to find this                            # last month
     Searching for: I really need to find this
     noop: would run open https://www.google.com/?#q=I+really+need+to+find+this&tbs=qdr:m
 
-    > run and now for something different --yfrom:2013               # later than 2013
+    > run --yfrom:2013 and now for something different               # later than 2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:2013,cd_max:
     
-    > run and now for something different --yto:2013                 # older than 2013
+    > run --yto:2013 and now for something different                 # older than 2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:,cd_max:2013
     
-    > run and now for something different --yfrom:2010 --yto:2013    # between 2010 and 2013
+    > run --yfrom:2010 --yto:2013 and now for something different    # between 2010 and 2013
     Searching for: and now for something different
     noop: would run open https://www.google.com/?#q=and+now+for+something+different&tbs=cdr:1,cd_min:2010,cd_max:2013
+    
+    > run --so -q:y howto iterate collection java                    # last year, limit to stackoverflow.com
+    Searching for: howto iterate collection java
+    NOOP: would run open https://www.google.com/?#q=site:stackoverflow.com+howto+iterate+collection+java&tbs=qdr:y
+    
+    > run --site theguardian.com --yfrom:2014 --yto:2014 world cup   # results from 2014 on theguardian.com
+    Searching for: world cup                                          
+    NOOP: would run open https://www.google.com/?#q=site:www.theguardian.com+world+cup&tbs=cdr:1,cd_min:2014,cd_max:2014
     
     
 **Configuration**  
@@ -89,9 +103,6 @@ or a shell script. An alias in a dot-file like `.bashrc` might look like.
 **More interesting stuff** (*that might be added*)  
 –––
 
-- [ ] Make open command customizable
-- [ ] Make Google's TLD customizable 
-- [ ] Provide option to limit searches to domain (e.g. stackoverflow)
 - [ ] Provide feature to save search presets (i.e. `--preset:foo`)
 - [ ] Make default search settings customizable (behavior /wo any options)
 - [ ] Make UI for interactive mode (`-i`)

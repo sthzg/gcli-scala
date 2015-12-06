@@ -8,6 +8,7 @@ object GCli {
 
   def main(args: Array[String]) {
     val queryCmd: GoogleQueryCmd = processArgs(args)
+    if (queryCmd.hasArgsError) sys.exit(0)
     if (!queryCmd.noop) executeCmd(queryCmd.buildCommand) else println(s"NOOP: would run ${queryCmd.buildCommand}")
   }
 
@@ -75,7 +76,7 @@ object GCli {
         if (config.noop) queryCmd.noop = true
 
       case None =>
-      // ignore
+        queryCmd.hasArgsError = true
     }
     queryCmd
   }

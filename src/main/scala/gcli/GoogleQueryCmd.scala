@@ -11,6 +11,7 @@ class GoogleQueryCmd {
   var q: String = _
   var timeFilter: String = _
   var noop: Boolean = false
+  var hasArgsError = false
 
   def buildCommand: String = s"$startCommand https://www.google.$tld/?#q=$limitToSite$q$timeFilter"
 

@@ -57,7 +57,7 @@ object Config{
     *
     * If the configuration file doesn't exist, it prompts the user for approval to create the file on their disk.
     *
-    * @param location absolut path to look for the .gcli config directory
+    * @param location absolute path to look for the .gcli config directory
     * @return instance of `Config` object
     */
   def load(location:String = System.getProperty("user.home")): Config = {
@@ -65,8 +65,13 @@ object Config{
 
     if (!Files.exists(Paths.get(configPath))) {
       val yesno = promptForYesNo(s"$configPath does not exist. Do you want to create it? [y|N]")
-      if (yesno) save(get(), configPath)
-      // TODO handle no
+      if (yesno) {
+        save(get(), configPath)
+      } else {
+        println(s"You declined to create a config directory. Using defaults:" +
+          s"\nstartCommand:\t${get().startCommand}\nTLD:\t\t${get().tld}")
+        return get()
+      }
     }
 
     val source = scala.io.Source.fromFile(configPath)

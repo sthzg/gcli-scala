@@ -30,9 +30,10 @@ interested in finding current content. Google provides the time-based search fil
             specify a domain that this search should be limited to, e.g. docs.djangoproject.com
       --so
             limit search results to stackoverflow.com
+      --noconf
+            don't look for configuration files on disk and don't prompt to create them
       --noop
             run program but don't open the browser
-
 
 **From within SBT**: (`--noop` prevents actually opening the browser)
 

@@ -62,6 +62,7 @@ object GCli {
                       yearTo: Int = -1,
                       site: String = "",
                       limitToStackoverflow: Boolean = false,
+                      noconf: Boolean = false,
                       noop: Boolean = false)
 
 
@@ -95,13 +96,20 @@ object GCli {
         year => if (validateYearInput(year)) success else failure("yto is not a valid year")
       } text "search for content older --yto (accepts 2-digit and 4-digit numbers)"
 
+      // specifying a domain to limit search results
       opt[String]("site") action { (x, c) =>
         c.copy(site = x)
       } text "specify a domain that this search should be limited to, e.g. docs.djangoproject.com"
 
+      // limit search results to stackoverflow.com
       opt[Unit]("so") action { (_, c) =>
         c.copy(limitToStackoverflow = true)
       } text "limit search results to stackoverflow.com"
+
+      // skip config-check and use defaults
+      opt[Unit]("noconf") action { (_, c) =>
+        c.copy(noconf = true)
+      } text "don't look for configuration files on disk and don't prompt to create them"
 
       // noop param for debugging
       opt[Unit]("noop") action { (_, c) =>
@@ -113,7 +121,7 @@ object GCli {
     parser.parse(args, Config()) match {
       case Some(config) =>
 
-        val cfg = gcli.Config.load()
+        val cfg = if(!config.noconf) gcli.Config.load() else gcli.Config.get()
 
         def getQuery = config.query.mkString(" ")
         println(s"\nSearching for: $getQuery")

@@ -1,3 +1,5 @@
+- 2015-12-05 **added --noconf flag**  
+Allows to skip prompting for a config.json and using defaults instead
 - 2015-12-06 **added --so flag**  
 Use --so flag to limit search results to stackoverflow.com
 - 2015-12-06 **added --site option**  

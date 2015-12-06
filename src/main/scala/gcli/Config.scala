@@ -61,7 +61,7 @@ object Config{
     * @return instance of `Config` object
     */
   def load(location:String = System.getProperty("user.home")): Config = {
-    val configPath = s"$location/.gcli/gcli.config"
+    val configPath = s"$location/.gcli/config.json"
 
     if (!Files.exists(Paths.get(configPath))) {
       val yesno = promptForYesNo(s"$configPath does not exist. Do you want to create it? [y|N]")

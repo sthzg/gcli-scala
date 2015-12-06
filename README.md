@@ -32,8 +32,6 @@ interested in finding current content. Google provides the time-based search fil
             limit search results to stackoverflow.com
       --noop
             run program but don't open the browser
-    
-
 
 
 **From within SBT**: (`--noop` prevents actually opening the browser)

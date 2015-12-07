@@ -19,9 +19,17 @@ object GCli {
     */
   def executeCmd(cmd: String): Unit = cmd !
 
+  /**
+    * Processes and validates command line arguments for the gcli command.
+    *
+    * @param args args array from command invokation
+    * @return populated instance of [[GoogleQueryCmd]] and a bool flag to signal whether parsing args was successful
+    */
   def processArgs(args: Array[String]): (GoogleQueryCmd, Boolean) = {
+
     val queryCmd = new GoogleQueryCmd()
     var hasArgsError: Boolean = false
+
     getCliParser.parse(args, CliConfig()) match {
       case Some(config) =>
 
@@ -79,6 +87,7 @@ object GCli {
       case None =>
         hasArgsError = true
     }
+
     (queryCmd, hasArgsError)
   }
 }

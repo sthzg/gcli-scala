@@ -112,7 +112,9 @@ or a shell script. An alias in a dot-file like `.bashrc` might look like.
 **Dependencies**  
 –––
 
-- [scopt](https://github.com/scopt/scopt)
+- [scopt](https://github.com/scopt/scopt) 3.3.0
+- [scalatest](http://www.scalatest.org) 2.2.4
+- [play-json](https://www.playframework.com/documentation/2.0/ScalaJson) 2.4.4
 
 
 **Motivation**  

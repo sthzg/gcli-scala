@@ -7,8 +7,8 @@ object GCli {
   import sys.process._
 
   def main(args: Array[String]) {
-    val queryCmd: GoogleQueryCmd = processArgs(args)
-    if (queryCmd.hasArgsError) sys.exit(0)
+    val (queryCmd: GoogleQueryCmd, hasArgsError: Boolean) = processArgs(args)
+    if (hasArgsError) sys.exit(0)
     if (!queryCmd.noop) executeCmd(queryCmd.buildCommand) else println(s"NOOP: would run ${queryCmd.buildCommand}")
   }
 
@@ -19,8 +19,9 @@ object GCli {
     */
   def executeCmd(cmd: String): Unit = cmd !
 
-  def processArgs(args: Array[String]): GoogleQueryCmd = {
+  def processArgs(args: Array[String]): (GoogleQueryCmd, Boolean) = {
     val queryCmd = new GoogleQueryCmd()
+    var hasArgsError: Boolean = false
     getCliParser.parse(args, CliConfig()) match {
       case Some(config) =>
 
@@ -76,8 +77,8 @@ object GCli {
         if (config.noop) queryCmd.noop = true
 
       case None =>
-        queryCmd.hasArgsError = true
+        hasArgsError = true
     }
-    queryCmd
+    (queryCmd, hasArgsError)
   }
 }

@@ -12,11 +12,7 @@ object GCli {
     if (!queryCmd.noop) executeCmd(queryCmd.buildCommand) else println(s"NOOP: would run ${queryCmd.buildCommand}")
   }
 
-  /**
-    * Executes command on shell.
-    *
-    * @param cmd command to be executed as string
-    */
+  /** Executes command on shell. */
   def executeCmd(cmd: String): Unit = cmd !
 
   /**
@@ -61,6 +57,15 @@ object GCli {
         else if (qdr.length > 0) { qdr }
         else                     { tbs }
 
+        // Use other Google search types like images, news or videos
+        // –––
+        def googleSearchType(): String = {
+          if (config.images) return "&tbm=isch"
+          if (config.videos) return "&tbm=vid"
+          if (config.news) return "&tbm=nws"
+          ""
+        }
+
         // Limit search results to one domain using Google's site:xyz.com option
         // –––
         def limitToSite(): String = {
@@ -82,6 +87,7 @@ object GCli {
         queryCmd.q = q
         queryCmd.timeFilter = timeFilter
         queryCmd.limitToSite = limitToSite()
+        queryCmd.googleSearchType = googleSearchType()
         if (config.noop) queryCmd.noop = true
 
       case None =>

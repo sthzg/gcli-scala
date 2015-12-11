@@ -2,6 +2,8 @@ import java.time.Year
 
 import gcli.QuickOptions.QuickOptions
 
+import scala.collection.mutable.ArrayBuffer
+
 
 package object gcli {
 
@@ -42,6 +44,9 @@ package object gcli {
                        yearTo: Int = -1,
                        site: String = "",
                        limitToStackoverflow: Boolean = false,
+                       images: Boolean = false,
+                       news: Boolean = false,
+                       videos: Boolean = false,
                        noconf: Boolean = false,
                        noop: Boolean = false)
 
@@ -90,6 +95,21 @@ package object gcli {
         c.copy(limitToStackoverflow = true)
       } text "limit search results to stackoverflow.com"
 
+      // use Google's image search
+      opt[Unit]("images") action { (_, c) =>
+        c.copy(images = true)
+      } text "use Google's image search"
+
+      // use Google's news search
+      opt[Unit]("news") action { (_, c) =>
+        c.copy(news = true)
+      } text "use Google's news search"
+
+      // use Google's video search
+      opt[Unit]("videos") action { (_, c) =>
+        c.copy(videos = true)
+      } text "use Google's video search"
+
       // skip config-check and use defaults
       opt[Unit]("noconf") action { (_, c) =>
         c.copy(noconf = true)
@@ -99,6 +119,17 @@ package object gcli {
       opt[Unit]("noop") action { (_, c) =>
         c.copy(noop = true)
       } text "run program but don't open the browser"
+
+      // Combined validation for validated config object
+      // –––
+      checkConfig { c =>
+        var errors = ArrayBuffer[String]()
+
+        if (List(c.images, c.videos, c.news).count(x => x) > 1)
+          errors += s"Only one of the flags --videos, --images and --news may be set"
+
+        if (errors.isEmpty) success else failure(errors.mkString("\n"))
+      }
     }
     parser
   }

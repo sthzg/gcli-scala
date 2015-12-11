@@ -1,3 +1,5 @@
+- 2015-12-11 **added support for image, news and video search**  
+By using new flags: `--videos`, `--images` or `--news`
 - 2015-12-06 **refactored app structure**  
 Split app in more parts to allow easier testing of the commands that are assembled by 
 parsing the CL arguments.

@@ -30,10 +30,17 @@ interested in finding current content. Google provides the time-based search fil
             specify a domain that this search should be limited to, e.g. docs.djangoproject.com
       --so
             limit search results to stackoverflow.com
+      --images
+            use Google's image search
+      --news
+            use Google's news search
+      --videos
+            use Google's video search
       --noconf
             don't look for configuration files on disk and don't prompt to create them
       --noop
             run program but don't open the browser
+    
 
 **From within SBT**: (`--noop` prevents actually opening the browser)
 
@@ -105,7 +112,6 @@ or a shell script. An alias in a dot-file like `.bashrc` might look like.
 - [ ] Provide feature to save search presets (i.e. `--preset:foo`)
 - [ ] Make default search settings customizable (behavior /wo any options)
 - [ ] Make UI for interactive mode (`-i`)
-- [ ] Support image and video search
 - [ ] Show search results on command line?
 
 

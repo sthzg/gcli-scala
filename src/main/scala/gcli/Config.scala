@@ -65,18 +65,16 @@ object Config{
 
     if (!Files.exists(Paths.get(configPath))) {
       val yesno = promptForYesNo(s"$configPath does not exist. Do you want to create it? [y|N]")
-      if (yesno) {
-        save(get(), configPath)
-      } else {
-        println(s"You declined to create a config directory. Using defaults:" +
-          s"\nstartCommand:\t${get().startCommand}\nTLD:\t\t${get().tld}")
-        return get()
+      yesno match {
+        case true  => save(get(), configPath)
+        case false =>
+          println(s"You declined to create a config directory. Using defaults:" +
+            s"\nstartCommand:\t${get().startCommand}\nTLD:\t\t${get().tld}")
+          return get()
       }
     }
-
     val source = scala.io.Source.fromFile(configPath)
     val configJson = try source.mkString finally source.close()
-
     Config.readConfig(Json.parse(configJson))
   }
 
